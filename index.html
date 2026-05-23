@@ -237,7 +237,7 @@
 
         .img-container {
             width: 100%;
-            height: 240px;
+            height: 300px;
             background: #1e1e24; /* Fallback color for missing project images */
             overflow: hidden;
             position: relative;
@@ -324,8 +324,8 @@
             background: var(--color-black-card);
             border: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(8px);
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 1000px;
+            margin: 9 auto;
             padding: 3rem 2rem;
             border-radius: 8px;
         }
@@ -360,7 +360,7 @@
         /* ==========================================================================
            RESPONSIVE DESIGN MODIFIERS
            ========================================================================== */
-        @media (max-width: 768px) {
+        @media (max-width: 1000px) {
             header { padding: 1.2rem 5%; }
             nav { display: none; } /* Simplified for mobile layout */
             section { padding: 6rem 5% 2rem 5%; }
@@ -385,8 +385,8 @@
     <!-- Hero Section -->
     <section class="hero">
         <span class="hero-tagline">Visual Designer & Digital Artist</span>
-        <h1>Ankeet Shreepali.</h1>
-        <h1>Building <span>Visual Stories.</span></h1>
+        <h1>ANKEET <span> SHREEPALI</span></h1>
+        <h1>"You Dream It, <span> We Design It.".</span></h1>
         <p>I transform complex concepts into clean, high-impact digital designs, brand identities, and structural artwork.</p>
         <a href="#work" class="cta-btn">View My Work</a>
     </section>
@@ -434,6 +434,19 @@
                     <p class="project-desc">Visual framing and clean interfaces built around modern mobile and web design metrics.</p>
                 </div>
             </div>
+<!-- Project Item 4 -->
+            <div class="portfolio-item">
+                <div class="img-container">
+                    <!-- Replace with your actual project image path -->              
+<img src="1.jpeg" alt=" Design Composition" width="300" height="600">
+                </div>
+                <div class="project-info">
+                    <span class="project-tag">Ankeet</span>
+                    <h3 class="project-title">Ankeet</h3>
+                    <p class="project-desc">Ankeet.</p>
+                </div>
+            </div>
+
 
         </div>
     </section>
@@ -446,7 +459,17 @@
                 <p>Hello! I'm Ankeet Shreepali, a graphic designer focused on constructing clean, high-contrast, and meaningful designs across digital mediums.</p>
  <p>I specialize in building distinct visual structures for brands, formatting layouts with meticulous attention to detail, and blending dark, minimalist themes with bold accents.</p>
             </div>
-<img src="https://scontent.fpkr1-1.fna.fbcdn.net/v/t39.30808-1/668870347_1312839220758717_2095489921789072599_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=1d2534&_nc_ohc=kgoyDN7my5gQ7kNvwFA4fXo&_nc_oc=AdpII9E3xRLmoMMPKxnUPVls2Nrygicpb0cl00X9NrRjiY87CV98tXlBAv5_Qj1SIWW23Y5xeWWFuzMhlZhqsEQR&_nc_zt=24&_nc_ht=scontent.fpkr1-1.fna&_nc_gid=qUrIR89WNmifL8V9G0G4cQ&_nc_ss=7b2a8&oh=00_Af6fvJ3CUNbjTVqoqkTXc9swq8RcvYKhKsjWl-DEkrEGkQ&oe=6A17354A" alt=" Ankeet Shreepali">
+<style>
+    .always-glow {
+        width: 200px;
+        /* Yesle warm yellow/gold light balchha */
+        box-shadow: 0px 0px 30px 5px rgba(0, 0, 128, 1);
+        border-radius: 5px;
+    }
+</style>
+
+<img src="ankeet.jpg" alt="ANKEET SHREEPALI" class="always-glow" width="200">
+
 	
             <div>
                 <h3>Technical Core</h3>
@@ -465,7 +488,7 @@
 <section id="contact" class="contact">
     <h2 class="section-title">Let's Connect</h2>
     <div class="contact-box">
-        <p>Whether you want to launch a new project, refine your visual identity, or simply talk design structure, let's chat directly on WhatsApp.</p>
+        <p>let's chat directly on WhatsApp.</p>
         
         <!-- 
           INSTRUCTIONS: 
@@ -479,12 +502,131 @@
            Chat on WhatsApp
         </a>
     </div>
- <a href="mailto:ankitsamuk@gmali.com" class="email-link">ankitsamuk@gmali.com</a>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 Ankeet Shreepali. All rights reserved.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Footer</title>
+    <style>
+        /* Footer ko main CSS box */
+        .site-footer {
+            background-color: #111116; /* Dark background */
+            color: #b5b5bd; /* Soft gray text color */
+            padding: 50px 20px 20px 20px;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+        }
+
+        /* 3-Column lai aaspas ma milauna Flexbox use gareko */
+        .footer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap; /* Mobile ma afei ek muni arko aauchha */
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        /* Pratyek Column ko style */
+        .footer-column {
+            flex: 1;
+            min-width: 250px; /* Mobile ma dherai sano huna didaina */
+        }
+
+        .footer-column h3 {
+            color: #ffffff; /* Heading ko color white */
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* Heading ko muni sano line halna */
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: #0088ff; /* Blue accent line */
+            margin-top: 8px;
+        }
+
+        .footer-column p {
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Links ko style */
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #b5b5bd;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        /* Mouse lada kheri color change hune (Hover Effect) */
+        .footer-links a:hover {
+            color: #0088ff; /* Hover hunda blue hunchha */
+        }
+
+        /* Sabai bhanda muni ko Copyright line */
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #22222a; /* Patlo boundary line */
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Yo Footer Code Tapai ko Webpage ko sabai bhanda muni hunchha -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <!-- Column 2: Links (Quick Links) -->
+            <div class="footer-column">
+                <h3>Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Samparka (Contact) -->
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li>📍 Beni, Myagdi, Nepal</li>
+                    <!-- Agi sikayako mailto link yasari footer ma baseko chha -->
+                    <li>📧 Email: <a href="samukankit@gmail.com">samukankit@email.com</a></li>
+                    <li>📞 Phone: +977 9745983936</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Copyright section -->
+        <div class="footer-bottom">
+            <p>&copy; 2026 Ankeet Shreepali. All Rights Reserved.</p>
+        </div>
     </footer>
 
+</body>
+</html>
+  
 </body>
 </html>
