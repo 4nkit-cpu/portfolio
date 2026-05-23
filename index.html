@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ankeet Shreepali | Graphic Designer Portfolio</title>
+    <style>
+        /* ==========================================================================
+           EXTERNAL RESOURCES & VARIABLES
+           ========================================================================== */
+        @import url('https://i.pinimg.com/webp85/1200x/33/b3/68/33b3680358521d1883990d2eda9141c5.webp/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            /* 
+               CHANGE YOUR BACKGROUND IMAGE HERE 
+               You can use a local path (e.g., 'images/bg.jpg') or a web URL.
+            */
+            --bg-image: url('https://i.pinimg.com/webp85/1200x/33/b3/68/33b3680358521d1883990d2eda9141c5.webp	');
+            
+            /* Color Palette */
+            --color-black-deep: #0a0a0c;
+            --color-black-card: rgba(20, 20, 25, 0.7);
+            --color-blue-primary: #0066ff;
+            --color-blue-glow: rgba(0, 102, 255, 0.4);
+            --color-text-main: #ffffff;
+            --color-text-muted: #94a3b8;
+            
+            /* Layout & Animation */
+            --font-main: 'Inter', sans-serif;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ==========================================================================
+           BASE STYLES & BACKGROUND SYSTEM
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--color-text-main);
+            background-color: var(--color-black-deep);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Full-screen fixed background image with a dark overlay for readability */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg, 
+                rgba(10, 10, 12, 0.95) 0%, 
+                rgba(0, 20, 50, 0.85) 100%
+            );
+            z-index: -1;
+        }
+
+        /* ==========================================================================
+           NAVIGATION
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(10, 10, 12, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-text-main);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--color-blue-primary);
+        }
+
+        nav a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--color-blue-primary);
+            text-shadow: 0 0 10px var(--color-blue-glow);
+        }
+
+        /* ==========================================================================
+           HERO SECTION
+           ========================================================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            position: relative;
+        }
+
+        .hero-tagline {
+            color: var(--color-blue-primary);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--color-blue-primary);
+        }
+
+        .hero p {
+            max-width: 600px;
+            color: var(--color-text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: var(--color-blue-primary);
+            color: var(--color-text-main);
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px var(--color-blue-glow);
+            align-self: flex-start;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px var(--color-blue-primary);
+        }
+
+        /* ==========================================================================
+           SECTION UTILITIES
+           ========================================================================== */
+        section {
+            padding: 8rem 10%2rem 10%;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--color-blue-primary);
+            box-shadow: 0 0 8px var(--color-blue-primary);
+        }
+
+        /* ==========================================================================
+           PORTFOLIO GRID
+           ========================================================================== */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .portfolio-item {
+            background: var(--color-black-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-blue-primary);
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.2);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 240px;
+            background: #1e1e24; /* Fallback color for missing project images */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .portfolio-item:hover .img-container img {
+            transform: scale(1.05);
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--color-blue-primary);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-desc {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================================================
+           ABOUT & SERVICES
+           ========================================================================== */
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            color: var(--color-text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .skill-badge {
+            background: rgba(0, 102, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            color: #e2e8f0;
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           CONTACT & FOOTER
+           ========================================================================== */
+        .contact {
+            text-align: center;
+            padding-bottom: 8rem;
+        }
+
+        .contact-box {
+            background: var(--color-black-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            border-radius: 8px;
+        }
+
+        .contact-box p {
+            color: var(--color-text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .email-link {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            color: var(--color-text-main);
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition-smooth);
+        }
+
+        .email-link:hover {
+            color: var(--color-blue-primary);
+            text-shadow: 0 0 15px var(--color-blue-glow);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 10%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(10, 10, 12, 0.9);
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN MODIFIERS
+           ========================================================================== */
+        @media (max-width: 768px) {
+            header { padding: 1.2rem 5%; }
+            nav { display: none; } /* Simplified for mobile layout */
+            section { padding: 6rem 5% 2rem 5%; }
+            .hero { padding: 0 5%; }
+            .about-container { grid-template-columns: 1fr; gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <a href="#" class="logo">Ankeet<span>.</span></a>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#work">Work</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <span class="hero-tagline">Visual Designer & Digital Artist</span>
+        <h1>Ankeet Shreepali.</h1>
+        <h1>Building <span>Visual Stories.</span></h1>
+        <p>I transform complex concepts into clean, high-impact digital designs, brand identities, and structural artwork.</p>
+        <a href="#work" class="cta-btn">View My Work</a>
+    </section>
+
+    <!-- Work / Portfolio Section -->
+    <section id="work">
+        <h2 class="section-title">Selected Projects</h2>
+        <div class="portfolio-grid">
+            
+            <!-- Project Item 1 -->
+            <div class="portfolio-item">
+                <div class="img-container">
+                    <!-- Replace with your actual project image path -->
+                    <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=600&auto=format&fit=crop" alt="Brand Identity Concept">
+                </div>
+                <div class="project-info">
+                    <span class="project-tag">Branding</span>
+                    <h3 class="project-title">Aether Tech Labs</h3>
+                    <p class="project-desc">Complete corporate visual system and guidelines designed for a cutting-edge software company.</p>
+                </div>
+            </div>
+
+            <!-- Project Item 2 -->
+            <div class="portfolio-item">
+                <div class="img-container">
+                    <!-- Replace with your actual project image path -->
+                    <img src="https://images.unsplash.com/photo-1618005198143-e5283b519a7f?q=80&w=600&auto=format&fit=crop" alt="Digital Art Cover">
+                </div>
+                <div class="project-info">
+                    <span class="project-tag">Digital Art</span>
+                    <h3 class="project-title">Abstract Synthesis</h3>
+                    <p class="project-desc">A series of experimental compositions analyzing dark, high-contrast structural layouts.</p>
+                </div>
+            </div>
+
+            <!-- Project Item 3 -->
+            <div class="portfolio-item">
+                <div class="img-container">
+                    <!-- Replace with your actual project image path -->
+                    <img src="https://images.unsplash.com/photo-1541462608141-ad4979e408c9?q=80&w=600&auto=format&fit=crop" alt="UI Design Composition">
+                </div>
+                <div class="project-info">
+                    <span class="project-tag">UI/UX Layout</span>
+                    <h3 class="project-title">Neo-Vibe Platform</h3>
+                    <p class="project-desc">Visual framing and clean interfaces built around modern mobile and web design metrics.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-container">
+            <div class="about-text">
+                <p>Hello! I'm Ankeet Shreepali, a graphic designer focused on constructing clean, high-contrast, and meaningful designs across digital mediums.</p>
+                <p>I specialize in building distinct visual structures for brands, formatting layouts with meticulous attention to detail, and blending dark, minimalist themes with bold accents.</p>
+            </div>
+            <div>
+                <h3>Technical Core</h3>
+                <div class="skills-container">
+                    <div class="skill-badge">Brand Architecture</div>
+                    <div class="skill-badge">Adobe Photoshop</div>
+                    <div class="skill-badge">Adobe Illustrator</div>
+                    <div class="skill-badge">Vector Illustration</div>
+                    <div class="skill-badge">Layout & Typography</div>
+                    <div class="skill-badge">Digital Composition</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2 class="section-title">Let's Connect</h2>
+        <div class="contact-box">
+            <p>Whether you want to launch a new project, refine your visual identity, or simply talk design structure, my inbox is open.</p>
+            <a href="mailto:ankeet@example.com" class="email-link">ankeet@example.com</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Ankeet Shreepali. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
