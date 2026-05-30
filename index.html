@@ -1,632 +1,1696 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ankeet Shreepali | Graphic Designer Portfolio</title>
-    <style>
-        /* ==========================================================================
-           EXTERNAL RESOURCES & VARIABLES
-           ========================================================================== */
-        @import url('https://i.pinimg.com/webp85/1200x/33/b3/68/33b3680358521d1883990d2eda9141c5.webp/css2?family=Inter:wght@300;400;600;800&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANKEET SHREEPALI — GRAPHIC DESIGNER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ROOT & RESET
+============================================================ */
+:root {
+  --void:     #020208;
+  --deep:     #05050f;
+  --panel:    rgba(255,255,255,0.03);
+  --border:   rgba(255,255,255,0.06);
+  --neon:     #00ffcc;
+  --neon2:    #ff00aa;
+  --blue:     #003fff;
+  --orange:   #ff6a00;
+  --white:    #e8eeff;
+  --muted:    #4a5068;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono:    'Space Mono', monospace;
+  --font-body:    'Outfit', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--white);
+  overflow-x: hidden;
+  cursor: none;
+  line-height: 1.6;
+}
+::selection { background: var(--neon); color: #000; }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: var(--neon); }
 
-        :root {
-            /* 
-               CHANGE YOUR BACKGROUND IMAGE HERE 
-               You can use a local path (e.g., 'images/bg.jpg') or a web URL.
-            */
-            --bg-image: url('https://i.pinimg.com/webp85/1200x/33/b3/68/33b3680358521d1883990d2eda9141c5.webp	');
-            
-            /* Color Palette */
-            --color-black-deep: #0a0a0c;
-            --color-black-card: rgba(20, 20, 25, 0.7);
-            --color-blue-primary: #0066ff;
-            --color-blue-glow: rgba(0, 102, 255, 0.4);
-            --color-text-main: #ffffff;
-            --color-text-muted: #94a3b8;
-            
-            /* Layout & Animation */
-            --font-main: 'Inter', sans-serif;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+/* ============================================================
+   CUSTOM CURSOR
+============================================================ */
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--neon);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .25s, height .25s, border-color .25s, background .25s;
+  mix-blend-mode: difference;
+}
+#cursor-dot {
+  position: fixed;
+  width: 5px; height: 5px;
+  background: var(--neon);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform .05s;
+}
+body.cursor-hover #cursor-ring {
+  width: 60px; height: 60px;
+  background: rgba(0,255,204,0.08);
+  border-color: var(--neon2);
+}
 
-        /* ==========================================================================
-           BASE STYLES & BACKGROUND SYSTEM
-           ========================================================================== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            scroll-behavior: smooth;
-        }
+/* ============================================================
+   CANVAS BACKGROUND
+============================================================ */
+#bgCanvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+  opacity: 0.55;
+}
 
-        body {
-            font-family: var(--font-main);
-            color: var(--color-text-main);
-            background-color: var(--color-black-deep);
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
-        }
+/* ============================================================
+   NOISE OVERLAY
+============================================================ */
+.noise {
+  position: fixed; inset: 0; z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.028;
+}
 
-        /* Full-screen fixed background image with a dark overlay for readability */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -2;
-        }
+/* ============================================================
+   SCANLINES
+============================================================ */
+.scanlines {
+  position: fixed; inset: 0; z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.07) 2px,
+    rgba(0,0,0,0.07) 4px
+  );
+}
 
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                135deg, 
-                rgba(10, 10, 12, 0.95) 0%, 
-                rgba(0, 20, 50, 0.85) 100%
-            );
-            z-index: -1;
-        }
+/* ============================================================
+   HEADER
+============================================================ */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 500;
+  padding: 1.2rem 5%;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(2,2,8,0.85);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+.logo-wrap {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none;
+}
+.logo-mark {
+  width: 36px; height: 36px;
+  border: 2px solid var(--neon);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.1rem; color: var(--neon);
+  position: relative;
+  animation: logoRotate 8s linear infinite;
+}
+.logo-mark::before {
+  content:'';
+  position: absolute; inset: -5px;
+  border: 1px solid rgba(0,255,204,0.2);
+  border-radius: 50%;
+  animation: logoRotate 4s linear infinite reverse;
+}
+@keyframes logoRotate {
+  to { box-shadow: 0 0 20px var(--neon), inset 0 0 10px rgba(0,255,204,0.1); }
+}
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 1.2rem; letter-spacing: 3px;
+  color: var(--white);
+}
+.logo-text em { font-style: normal; color: var(--neon); }
 
-        /* ==========================================================================
-           NAVIGATION
-           ========================================================================== */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.5rem 10%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            background: rgba(10, 10, 12, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+nav { display: flex; gap: 2rem; align-items: center; }
+nav a {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s;
+  position: relative;
+}
+nav a::before {
+  content: attr(data-num);
+  position: absolute; top: -12px; left: 0;
+  font-size: 0.55rem; color: var(--neon);
+  opacity: 0; transition: opacity .2s;
+}
+nav a:hover { color: var(--neon); }
+nav a:hover::before { opacity: 1; }
+nav a.active { color: var(--neon); }
 
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--color-text-main);
-            text-decoration: none;
-        }
+.nav-status {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem; color: var(--muted);
+}
+.nav-status .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--neon);
+  animation: pulse 1.5s ease infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,204,.5); }
+  50% { opacity: .7; box-shadow: 0 0 0 6px rgba(0,255,204,0); }
+}
 
-        .logo span {
-            color: var(--color-blue-primary);
-        }
+/* Hamburger */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: none; padding: 4px;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--neon); border-radius: 1px;
+  transition: all .3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-        nav a {
-            color: var(--color-text-muted);
-            text-decoration: none;
-            margin-left: 2rem;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: var(--transition-smooth);
-        }
+.mobile-nav {
+  position: fixed; top: 65px; left: 0; right: 0;
+  background: rgba(2,2,8,0.97);
+  backdrop-filter: blur(24px);
+  padding: 2rem 5%;
+  flex-direction: column; gap: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  z-index: 499;
+  display: none; opacity: 0; transform: translateY(-8px);
+  transition: all .3s;
+}
+.mobile-nav.open { display: flex; opacity: 1; transform: none; }
+.mobile-nav a {
+  font-family: var(--font-mono); font-size: 1rem;
+  color: var(--muted); text-decoration: none;
+  text-transform: uppercase; letter-spacing: 2px;
+  transition: color .2s;
+}
+.mobile-nav a:hover { color: var(--neon); }
 
-        nav a:hover, nav a.active {
-            color: var(--color-blue-primary);
-            text-shadow: 0 0 10px var(--color-blue-glow);
-        }
+/* ============================================================
+   HERO
+============================================================ */
+.hero {
+  min-height: 100vh;
+  padding: 130px 5% 5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 3rem;
+  position: relative;
+}
+@media(max-width:768px){ .hero { grid-template-columns: 1fr; padding-top:110px; } }
 
-        /* ==========================================================================
-           HERO SECTION
-           ========================================================================== */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 10%;
-            position: relative;
-        }
+.hero-left { position: relative; }
 
-        .hero-tagline {
-            color: var(--color-blue-primary);
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--neon);
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before {
+  content: ''; display: inline-block;
+  width: 40px; height: 1px; background: var(--neon);
+}
 
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -1px;
-        }
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 12vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: -1px;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+.hero-name .line1 { display: block; }
+.hero-name .line2 {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--neon);
+  text-shadow: none;
+}
+.hero-name .glitch-wrap {
+  position: relative; display: inline-block;
+}
+.hero-name .glitch-wrap::before,
+.hero-name .glitch-wrap::after {
+  content: attr(data-text);
+  position: absolute; top: 0; left: 0;
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+.hero-name .glitch-wrap::before {
+  color: var(--neon2); left: 3px; top: -2px;
+  clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+  animation: glitch1 4s infinite;
+}
+.hero-name .glitch-wrap::after {
+  color: var(--neon); left: -3px; top: 2px;
+  clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+  animation: glitch2 3.5s infinite;
+}
+@keyframes glitch1 {
+  0%,89%,100% { opacity:0; transform:none; }
+  90% { opacity:1; transform: translateX(-4px) skewX(2deg); }
+  93% { opacity:1; transform: translateX(4px); }
+  96% { opacity:0; }
+}
+@keyframes glitch2 {
+  0%,84%,100% { opacity:0; transform:none; }
+  85% { opacity:1; transform: translateX(6px) skewX(-3deg); }
+  88% { opacity:1; transform: translateX(-2px); }
+  91% { opacity:0; }
+}
 
-        .hero h1 span {
-            color: transparent;
-            -webkit-text-stroke: 1px var(--color-blue-primary);
-        }
+.hero-role {
+  font-family: var(--font-mono);
+  font-size: 0.9rem; color: var(--muted);
+  margin-bottom: 1.5rem; margin-top: 1rem;
+  border-left: 2px solid var(--neon);
+  padding-left: 1rem;
+}
 
-        .hero p {
-            max-width: 600px;
-            color: var(--color-text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2.5rem;
-        }
+.hero-tagline {
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 300; color: rgba(232,238,255,0.7);
+  margin-bottom: 2.5rem;
+  max-width: 440px;
+  line-height: 1.7;
+}
+.hero-tagline strong { color: var(--neon); font-weight: 600; }
 
-        .cta-btn {
-            display: inline-block;
-            background: var(--color-blue-primary);
-            color: var(--color-text-main);
-            text-decoration: none;
-            padding: 0.8rem 2rem;
-            border-radius: 4px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: var(--transition-smooth);
-            box-shadow: 0 4px 15px var(--color-blue-glow);
-            align-self: flex-start;
-        }
+.hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
 
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px var(--color-blue-primary);
-        }
+/* Magnetic button base */
+.btn-mag {
+  position: relative; display: inline-flex;
+  align-items: center; gap: 10px;
+  padding: 0.85rem 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all .3s;
+  overflow: hidden;
+  cursor: none;
+}
+.btn-mag::before {
+  content: '';
+  position: absolute; inset: 0;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+.btn-mag:hover::before { transform: scaleX(1); }
+.btn-neon {
+  background: transparent;
+  color: var(--neon);
+  border: 1px solid var(--neon);
+}
+.btn-neon::before { background: var(--neon); }
+.btn-neon:hover { color: var(--void); box-shadow: 0 0 30px rgba(0,255,204,.4); }
+.btn-solid {
+  background: var(--neon);
+  color: var(--void);
+  border: 1px solid var(--neon);
+}
+.btn-solid::before { background: var(--neon2); }
+.btn-solid:hover { color: #fff; box-shadow: 0 0 30px rgba(255,0,170,.4); }
 
-        /* ==========================================================================
-           SECTION UTILITIES
-           ========================================================================== */
-        section {
-            padding: 8rem 10%2rem 10%;
-        }
+.btn-mag .btn-arrow {
+  transition: transform .25s;
+}
+.btn-mag:hover .btn-arrow { transform: translateX(4px); }
 
-        .section-title {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 3rem;
-            position: relative;
-            display: inline-block;
-        }
+/* Hero metrics strip */
+.hero-metrics {
+  display: flex; flex-wrap: wrap; gap: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.metric { min-width: 80px; }
+.metric-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem; line-height: 1;
+  color: var(--neon);
+}
+.metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted);
+  margin-top: 4px;
+}
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 40px;
-            height: 3px;
-            background-color: var(--color-blue-primary);
-            box-shadow: 0 0 8px var(--color-blue-primary);
-        }
+/* Hero Right — 3D Card */
+.hero-right {
+  display: flex; justify-content: center; align-items: center;
+}
+.hero-card {
+  width: 340px; max-width: 100%;
+  aspect-ratio: 9/13;
+  background: linear-gradient(135deg, rgba(0,255,204,0.05), rgba(0,63,255,0.08));
+  border: 1px solid rgba(0,255,204,0.2);
+  border-radius: 4px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform .1s linear;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.hero-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,255,204,0.12) 0%, transparent 55%);
+  pointer-events: none;
+}
+.hero-card::after {
+  content: 'PORTFOLIO 2026';
+  position: absolute; bottom: 2rem; right: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem; letter-spacing: 3px;
+  color: rgba(0,255,204,0.3);
+  transform: rotate(90deg); transform-origin: right bottom;
+}
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.card-chip {
+  width: 44px; height: 32px;
+  border: 1px solid rgba(0,255,204,0.4);
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(0,255,204,0.1), rgba(0,255,204,0.05));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px; padding: 4px;
+}
+.card-chip-cell {
+  background: rgba(0,255,204,0.2);
+  border-radius: 1px;
+}
+.card-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem; color: var(--neon);
+  letter-spacing: 2px;
+}
+.card-mid { }
+.card-name {
+  font-family: var(--font-display);
+  font-size: 1.8rem; letter-spacing: 3px;
+  color: var(--white); margin-bottom: 0.25rem;
+}
+.card-title-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; color: var(--neon); letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.card-bot {}
+.card-number {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; letter-spacing: 4px;
+  color: rgba(232,238,255,0.4);
+  margin-bottom: 0.5rem;
+}
+.card-skills {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.card-skill {
+  font-family: var(--font-mono);
+  font-size: 0.55rem; letter-spacing: 1.5px;
+  color: var(--neon);
+  border: 1px solid rgba(0,255,204,0.3);
+  padding: 2px 8px; border-radius: 2px;
+}
 
-        /* ==========================================================================
-           PORTFOLIO GRID
-           ========================================================================== */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-        }
+/* Scan line animation on card */
+.card-scan {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon), transparent);
+  animation: scanCard 3s linear infinite;
+  opacity: 0.6;
+}
+@keyframes scanCard {
+  0% { top: -2px; opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { top: 100%; opacity: 0; }
+}
 
-        .portfolio-item {
-            background: var(--color-black-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            overflow: hidden;
-            backdrop-filter: blur(8px);
-            transition: var(--transition-smooth);
-            position: relative;
-        }
+/* ============================================================
+   TICKER
+============================================================ */
+.ticker-wrap {
+  overflow: hidden;
+  background: rgba(0,255,204,0.04);
+  border-top: 1px solid rgba(0,255,204,0.15);
+  border-bottom: 1px solid rgba(0,255,204,0.15);
+  padding: 0.75rem 0;
+}
+.ticker-track {
+  display: flex; width: max-content;
+  animation: tickerMove 20s linear infinite;
+}
+.ticker-item {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted); white-space: nowrap;
+  padding: 0 2rem;
+}
+.ticker-item .sep { color: var(--neon); margin: 0 .5rem; }
+@keyframes tickerMove { to { transform: translateX(-50%); } }
 
-        .portfolio-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--color-blue-primary);
-            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.2);
-        }
+/* ============================================================
+   SECTION UTILITY
+============================================================ */
+.section-wrap { padding: 8rem 5%; position: relative; }
 
-        .img-container {
-            width: 100%;
-            height: 300px;
-            background: #1e1e24; /* Fallback color for missing project images */
-            overflow: hidden;
-            position: relative;
-        }
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--neon);
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-eyebrow::after {
+  content: ''; flex: 0 0 30px;
+  height: 1px; background: var(--neon); opacity: 0.5;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem,6vw,5rem);
+  letter-spacing: -1px; line-height: 0.95;
+  margin-bottom: 1rem;
+}
 
-        .img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition-smooth);
-        }
+/* ============================================================
+   REVEAL ANIMATIONS
+============================================================ */
+.reveal { opacity:0; transform:translateY(40px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity:1; transform:none; }
+.reveal-left { opacity:0; transform:translateX(-40px); transition: opacity .7s ease, transform .7s ease; }
+.reveal-left.visible { opacity:1; transform:none; }
+[data-delay="1"] { transition-delay:.1s; }
+[data-delay="2"] { transition-delay:.2s; }
+[data-delay="3"] { transition-delay:.3s; }
+[data-delay="4"] { transition-delay:.4s; }
 
-        .portfolio-item:hover .img-container img {
-            transform: scale(1.05);
-        }
+/* ============================================================
+   WORK SECTION — BENTO GRID
+============================================================ */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  gap: 1rem;
+}
+.bento-item {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  transition: all .4s cubic-bezier(.4,0,.2,1);
+  cursor: none;
+}
+.bento-item:hover {
+  border-color: rgba(0,255,204,0.4);
+  box-shadow: 0 0 40px rgba(0,255,204,0.08);
+  transform: translateY(-3px);
+}
+.bento-item.span-8  { grid-column: span 8; }
+.bento-item.span-4  { grid-column: span 4; }
+.bento-item.span-6  { grid-column: span 6; }
+.bento-item.span-5  { grid-column: span 5; }
+.bento-item.span-7  { grid-column: span 7; }
+.bento-item.span-12 { grid-column: span 12; }
 
-        .project-info {
-            padding: 1.5rem;
-        }
+@media(max-width:900px) {
+  .bento-item.span-8,.bento-item.span-7,
+  .bento-item.span-5,.bento-item.span-4,
+  .bento-item.span-6,.bento-item.span-12 { grid-column: span 12; }
+}
 
-        .project-tag {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--color-blue-primary);
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
+.bento-img-wrap { width:100%; overflow:hidden; position:relative; }
+.bento-img-wrap.tall  { height:360px; }
+.bento-img-wrap.mid   { height:280px; }
+.bento-img-wrap.short { height:200px; }
+.bento-img-wrap img {
+  width:100%; height:100%; object-fit:cover;
+  transition: transform .6s cubic-bezier(.4,0,.2,1), filter .6s;
+  filter: saturate(0.7) brightness(0.85);
+  display:block;
+}
+.bento-item:hover .bento-img-wrap img {
+  transform: scale(1.06);
+  filter: saturate(1) brightness(1);
+}
 
-        .project-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
+/* Holo overlay */
+.holo-overlay {
+  position: absolute; inset:0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%, rgba(0,255,204,0.05) 40%,
+    rgba(255,0,170,0.05) 60%, transparent 100%
+  );
+  opacity: 0; transition: opacity .4s;
+  pointer-events: none;
+}
+.bento-item:hover .holo-overlay { opacity: 1; }
 
-        .project-desc {
-            color: var(--color-text-muted);
-            font-size: 0.9rem;
-        }
+.bento-body { padding: 1.5rem 1.75rem; }
+.bento-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--neon);
+  margin-bottom: 0.4rem; display: block;
+}
+.bento-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem; letter-spacing: 1px;
+  margin-bottom: 0.4rem;
+}
+.bento-desc {
+  font-size: 0.85rem; color: var(--muted); line-height: 1.65;
+}
 
-        /* ==========================================================================
-           ABOUT & SERVICES
-           ========================================================================== */
-        .about-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
+/* Index number */
+.bento-num {
+  position: absolute; top: 1.25rem; right: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 3.5rem; line-height: 1;
+  color: rgba(255,255,255,0.04);
+  pointer-events: none; user-select: none;
+}
 
-        .about-text p {
-            color: var(--color-text-muted);
-            margin-bottom: 1.5rem;
-            font-size: 1.05rem;
-        }
+/* ============================================================
+   ABOUT — DIAGONAL SPLIT
+============================================================ */
+.about-section {
+  position: relative;
+  overflow: hidden;
+}
+.about-split {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 6rem; align-items: center;
+}
+@media(max-width:768px){ .about-split { grid-template-columns:1fr; gap:3rem; } }
 
-        .skills-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-top: 2rem;
-        }
+.about-photo-wrap {
+  position: relative;
+}
+.about-photo-frame {
+  position: relative; width: 100%; max-width: 320px;
+}
+.about-photo-frame img {
+  width:100%; display:block; border-radius:3px;
+  filter: saturate(0.8) contrast(1.1);
+  transition: filter .3s;
+}
+.about-photo-frame:hover img { filter: saturate(1) contrast(1); }
 
-        .skill-badge {
-            background: rgba(0, 102, 255, 0.1);
-            border: 1px solid rgba(0, 102, 255, 0.3);
-            color: #e2e8f0;
-            padding: 0.4rem 1rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+/* Corner brackets */
+.about-photo-frame::before, .about-photo-frame::after {
+  content:''; position:absolute;
+  width:30px; height:30px;
+}
+.about-photo-frame::before {
+  top:-8px; left:-8px;
+  border-top: 2px solid var(--neon);
+  border-left: 2px solid var(--neon);
+}
+.about-photo-frame::after {
+  bottom:-8px; right:-8px;
+  border-bottom: 2px solid var(--neon2);
+  border-right: 2px solid var(--neon2);
+}
 
-        /* ==========================================================================
-           CONTACT & FOOTER
-           ========================================================================== */
-        .contact {
-            text-align: center;
-            padding-bottom: 8rem;
-        }
+.about-photo-label {
+  position: absolute; bottom:-24px; left:0; right:0;
+  text-align:center;
+  font-family: var(--font-mono);
+  font-size: 0.6rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--muted);
+}
 
-        .contact-box {
-            background: var(--color-black-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(8px);
-            max-width: 1000px;
-            margin: 9 auto;
-            padding: 3rem 2rem;
-            border-radius: 8px;
-        }
+/* XP bar */
+.xp-bars { margin-top: 2rem; }
+.xp-bar-item { margin-bottom: 1rem; }
+.xp-bar-label {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.65rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 6px;
+}
+.xp-bar-label span:last-child { color: var(--neon); }
+.xp-track {
+  height: 3px; background: rgba(255,255,255,0.05);
+  border-radius: 1px; overflow: hidden;
+  position: relative;
+}
+.xp-fill {
+  height: 100%; background: linear-gradient(90deg, var(--neon), var(--blue));
+  border-radius: 1px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 1.2s cubic-bezier(.4,0,.2,1);
+}
+.xp-fill.animate { transform: scaleX(1); }
 
-        .contact-box p {
-            color: var(--color-text-muted);
-            margin-bottom: 2rem;
-        }
+.about-body p {
+  color: rgba(232,238,255,0.6); font-size:1rem;
+  line-height:1.85; margin-bottom:1.25rem;
+}
+.about-body strong { color: var(--white); font-weight:600; }
 
-        .email-link {
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            color: var(--color-text-main);
-            text-decoration: none;
-            font-weight: 700;
-            transition: var(--transition-smooth);
-        }
+.tag-cloud { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.5rem; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 1px; color: var(--muted);
+  transition: all .25s;
+  cursor: none;
+}
+.tag:hover { border-color: var(--neon); color: var(--neon); background: rgba(0,255,204,0.05); }
 
-        .email-link:hover {
-            color: var(--color-blue-primary);
-            text-shadow: 0 0 15px var(--color-blue-glow);
-        }
+/* ============================================================
+   SERVICES — NUMBERED ACCORDION
+============================================================ */
+.services-list { border-top: 1px solid var(--border); }
+.service-row {
+  border-bottom: 1px solid var(--border);
+  padding: 2rem 0;
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 2rem; align-items: start;
+  cursor: none;
+  transition: padding .3s;
+}
+.service-row:hover { padding-left: 8px; }
+.service-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem; line-height: 1;
+  color: rgba(0,255,204,0.18);
+  transition: color .3s;
+}
+.service-row:hover .service-num { color: var(--neon); }
+.service-head {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  letter-spacing: 1px; margin-bottom: 0.5rem;
+  transition: color .3s;
+}
+.service-row:hover .service-head { color: var(--neon); }
+.service-body {
+  font-size: 0.88rem; color: var(--muted); line-height: 1.7;
+  max-width: 500px;
+}
+.service-icon-wrap {
+  font-size: 2rem;
+  opacity: 0.5;
+  transition: opacity .3s, transform .3s;
+}
+.service-row:hover .service-icon-wrap { opacity:1; transform: scale(1.2) rotate(-5deg); }
 
-        footer {
-            text-align: center;
-            padding: 2rem 10%;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(10, 10, 12, 0.9);
-            color: var(--color-text-muted);
-            font-size: 0.85rem;
-        }
+/* ============================================================
+   TERMINAL SECTION
+============================================================ */
+.terminal-section {
+  background: rgba(0,255,204,0.02);
+  border-top: 1px solid rgba(0,255,204,0.1);
+  border-bottom: 1px solid rgba(0,255,204,0.1);
+}
+.terminal-wrap {
+  max-width: 800px; margin: 0 auto;
+}
+.terminal {
+  background: #010108;
+  border: 1px solid rgba(0,255,204,0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0,255,204,0.05);
+}
+.terminal-bar {
+  background: #0a0a14;
+  padding: 0.75rem 1rem;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(0,255,204,0.1);
+}
+.t-dot { width: 10px; height:10px; border-radius:50%; }
+.t-dot.r { background: #ff5f57; }
+.t-dot.y { background: #febc2e; }
+.t-dot.g { background: #28c840; }
+.terminal-title {
+  font-family: var(--font-mono); font-size: 0.7rem;
+  color: var(--muted); letter-spacing: 2px;
+  margin-left: auto; margin-right: auto;
+}
+.terminal-body {
+  padding: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 2;
+  min-height: 280px;
+}
+.t-line { display: flex; gap: 12px; }
+.t-prompt { color: var(--neon); }
+.t-cmd { color: var(--white); }
+.t-out { color: rgba(232,238,255,0.5); padding-left: 24px; }
+.t-out.green { color: #28c840; }
+.t-out.pink { color: var(--neon2); }
+.t-out.yellow { color: #febc2e; }
+.t-cursor {
+  display: inline-block; width: 8px; height: 14px;
+  background: var(--neon); vertical-align: middle;
+  animation: blink .9s step-start infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+.terminal-input-row {
+  display: flex; gap: 12px;
+  border-top: 1px solid rgba(0,255,204,0.1);
+  padding: 1rem 1.5rem;
+  align-items: center;
+}
+#termInput {
+  flex: 1; background: none; border: none; outline: none;
+  font-family: var(--font-mono); font-size: 0.8rem;
+  color: var(--white); caret-color: var(--neon);
+}
+.t-send {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  background: none; border: 1px solid rgba(0,255,204,0.3);
+  color: var(--neon); padding: 0.4rem 0.9rem;
+  cursor: none; transition: all .2s; border-radius: 2px;
+}
+.t-send:hover { background: var(--neon); color: var(--void); }
 
-        /* ==========================================================================
-           RESPONSIVE DESIGN MODIFIERS
-           ========================================================================== */
-        @media (max-width: 1000px) {
-            header { padding: 1.2rem 5%; }
-            nav { display: none; } /* Simplified for mobile layout */
-            section { padding: 6rem 5% 2rem 5%; }
-            .hero { padding: 0 5%; }
-            .about-container { grid-template-columns: 1fr; gap: 2rem; }
-        }
-    </style>
+/* ============================================================
+   PROCESS SECTION — HORIZONTAL TIMELINE
+============================================================ */
+.process-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px; margin-top: 3rem;
+  position: relative;
+}
+@media(max-width:768px){ .process-track { grid-template-columns: 1fr 1fr; gap:1rem; } }
+.process-step {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 2rem 1.5rem;
+  position: relative;
+  transition: all .3s;
+}
+.process-step:hover {
+  border-color: rgba(0,255,204,0.3);
+  background: rgba(0,255,204,0.03);
+}
+.process-step::after {
+  content: '→';
+  position: absolute; right: -14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem; color: var(--muted); z-index: 1;
+}
+.process-step:last-child::after { display: none; }
+@media(max-width:768px){ .process-step::after { display:none; } }
+
+.process-num {
+  font-family: var(--font-display);
+  font-size: 4rem; line-height: 1;
+  color: rgba(0,255,204,0.07);
+  margin-bottom: 1rem;
+}
+.process-head {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--neon);
+  margin-bottom: 0.5rem;
+}
+.process-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+/* ============================================================
+   CONTACT
+============================================================ */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+}
+@media(max-width:768px){ .contact-grid { grid-template-columns:1fr; gap:3rem; } }
+
+.contact-left .big-text {
+  font-family: var(--font-display);
+  font-size: clamp(3rem,8vw,7rem);
+  line-height: 0.9; letter-spacing: -2px;
+  margin-bottom: 1.5rem;
+}
+.contact-left .big-text .outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0,255,204,0.5);
+}
+.contact-sub {
+  color: var(--muted); font-size: 1rem;
+  line-height: 1.75; max-width: 380px;
+  margin-bottom: 2.5rem;
+}
+
+.contact-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2.5rem;
+  position: relative; overflow: hidden;
+}
+.contact-card::before {
+  content: '';
+  position: absolute; top:-80px; right:-80px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,255,204,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+.contact-info-row {
+  display: flex; align-items: flex-start; gap: 1rem;
+  margin-bottom: 1.5rem; padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.contact-info-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.ci-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+.ci-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 3px;
+}
+.ci-value {
+  font-size: 0.95rem; color: var(--white);
+}
+.ci-value a { color: var(--white); text-decoration: none; transition: color .2s; }
+.ci-value a:hover { color: var(--neon); }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer {
+  background: #010108;
+  border-top: 1px solid var(--border);
+  padding: 4rem 5% 2.5rem;
+}
+.footer-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; flex-wrap: wrap; gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+.footer-brand-name {
+  font-family: var(--font-display);
+  font-size: 3rem; letter-spacing: 2px;
+  line-height: 1; color: var(--white);
+  margin-bottom: 0.5rem;
+}
+.footer-brand-name em { font-style:normal; color:var(--neon); }
+.footer-brand-sub {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--muted);
+}
+.footer-links-group h4 {
+  font-family: var(--font-mono);
+  font-size: 0.6rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--neon);
+  margin-bottom: 1rem;
+}
+.footer-links-group ul { list-style:none; }
+.footer-links-group li { margin-bottom: 0.6rem; }
+.footer-links-group a {
+  font-size: 0.88rem; color: var(--muted);
+  text-decoration: none; transition: color .2s;
+}
+.footer-links-group a:hover { color: var(--white); }
+.footer-bottom {
+  padding-top: 2rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem; color: var(--muted);
+  letter-spacing: 1.5px;
+}
+.footer-bottom span { color: var(--neon); }
+
+/* ============================================================
+   AVAILABILITY BADGE
+============================================================ */
+.avail-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(0,255,204,0.3);
+  border-radius: 2px;
+  padding: 0.4rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--neon);
+  margin-bottom: 1.5rem;
+  background: rgba(0,255,204,0.04);
+}
+.avail-badge .blip {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--neon);
+  animation: blip 1.4s ease infinite;
+}
+@keyframes blip {
+  0%,100%{ opacity:1; transform:scale(1); }
+  50%{ opacity:.4; transform:scale(0.7); }
+}
+
+/* ============================================================
+   FLOATING SHAPES (decorative)
+============================================================ */
+.deco-cross {
+  position: absolute; pointer-events: none; user-select: none;
+  color: rgba(0,255,204,0.12);
+  font-size: 1rem; animation: floatDeco 6s ease-in-out infinite;
+}
+@keyframes floatDeco {
+  0%,100%{ transform:translateY(0) rotate(0deg); }
+  50%{ transform:translateY(-10px) rotate(10deg); }
+}
+
+/* ============================================================
+   PAGE LOADER
+============================================================ */
+#loader {
+  position: fixed; inset: 0; z-index: 9000;
+  background: var(--void);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1.5rem;
+}
+.loader-name {
+  font-family: var(--font-display);
+  font-size: 3rem; letter-spacing: 8px;
+  color: var(--neon);
+  animation: loaderPulse 0.8s ease infinite alternate;
+}
+@keyframes loaderPulse {
+  from { opacity: 0.4; } to { opacity: 1; }
+}
+.loader-bar-track {
+  width: 200px; height: 2px;
+  background: rgba(0,255,204,0.1);
+  border-radius: 1px; overflow: hidden;
+}
+.loader-bar-fill {
+  height: 100%; background: var(--neon);
+  border-radius: 1px;
+  animation: loaderFill 1.6s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes loaderFill { from { width: 0; } to { width: 100%; } }
+.loader-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--muted);
+}
+#loader.hide {
+  animation: loaderOut .5s ease forwards;
+}
+@keyframes loaderOut {
+  to { opacity: 0; pointer-events: none; }
+}
+</style>
 </head>
 <body>
 
-    <!-- Header / Navigation -->
-    <header>
-        <a href="#" class="logo">Ankeet<span> Shreepali</span></a>
-        <nav>
-            <a href="#" class="active">Home</a>
-            <a href="#work">Work</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+<!-- PAGE LOADER -->
+<div id="loader">
+  <div class="loader-name">ANKEET</div>
+  <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+  <div class="loader-text">Loading Portfolio_</div>
+</div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <span class="hero-tagline">Visual Designer & Digital Artist</span>
-        <h1>ANKEET <span> SHREEPALI</span></h1>
-        <h1>"You Dream It, <span> We Design It.".</span></h1>
-        <p>I transform complex concepts into clean, high-impact digital designs, brand identities, and structural artwork.</p>
-        <a href="#work" class="cta-btn">View My Work</a>
-    </section>
+<!-- Custom cursor -->
+<div id="cursor-ring"></div>
+<div id="cursor-dot"></div>
 
-    <!-- Work / Portfolio Section -->
-    <section id="work">
-        <h2 class="section-title">Selected Projects</h2>
-        <div class="portfolio-grid">
-            
-            <!-- Project Item 1 -->
-            <div class="portfolio-item">
-                <div class="img-container">
-                    <!-- Replace with your actual project image path -->
-                    <img src="https://i.pinimg.com/736x/f8/7c/a3/f87ca3fdc74d7c35555fcf52cfc43bde.jpg	" alt="Brand Identity Concept">
-                </div>
-                <div class="project-info">
-                    <span class="project-tag">Branding</span>
-                    <h3 class="project-title">Aether Tech Labs</h3>
-                    <p class="project-desc">Complete corporate visual system and guidelines designed for a cutting-edge software company.</p>
-                </div>
-            </div>
+<!-- Noise + scanlines overlays -->
+<div class="noise"></div>
+<div class="scanlines"></div>
 
-            <!-- Project Item 2 -->
-            <div class="portfolio-item">
-                <div class="img-container">
-                    <!-- Replace with your actual project image path -->
-                    <img src="https://i.pinimg.com/736x/81/e5/76/81e576777c288f5e0584e439cb6759af.jpg" alt="Digital Art Cover">
-                </div>
-                <div class="project-info">
-                    <span class="project-tag">Digital Art</span>
-                    <h3 class="project-title">Abstract Synthesis</h3>
-                    <p class="project-desc">A series of experimental compositions analyzing dark, high-contrast structural layouts.</p>
-                </div>
-            </div>
+<!-- Canvas particle network -->
+<canvas id="bgCanvas"></canvas>
 
-            <!-- Project Item 3 -->
-            <div class="portfolio-item">
-                <div class="img-container">
-                    <!-- Replace with your actual project image path -->
-                    <img src="https://i.pinimg.com/736x/64/c3/0d/64c30d9f583a5d51a6ea5e22e1900736.jpg" alt=" Design Composition">
-                </div>
-                <div class="project-info">
-                    <span class="project-tag">UI/UX Layout</span>
-                    <h3 class="project-title">Neo-Vibe Platform</h3>
-                    <p class="project-desc">Visual framing and clean interfaces built around modern mobile and web design metrics.</p>
-                </div>
-            </div>
-<!-- Project Item 4 -->
-            <div class="portfolio-item">
-                <div class="img-container">
-                    <!-- Replace with your actual project image path -->              
-<img src="1.jpeg" alt=" Design Composition" width="300" height="600">
-                </div>
-                <div class="project-info">
-                    <span class="project-tag">Ankeet</span>
-                    <h3 class="project-title">Ankeet</h3>
-                    <p class="project-desc">Ankeet.</p>
-                </div>
-            </div>
+<!-- ===================== HEADER ===================== -->
+<header id="mainHeader">
+  <a href="#" class="logo-wrap">
+    <div class="logo-mark">A</div>
+    <span class="logo-text">ANKEET <em>SHREEPALI</em></span>
+  </a>
+  <nav id="desktopNav">
+    <a href="#work"     data-num="01">Work</a>
+    <a href="#about"    data-num="02">About</a>
+    <a href="#services" data-num="03">Services</a>
+    <a href="#process"  data-num="04">Process</a>
+    <a href="#contact"  data-num="05">Contact</a>
+  </nav>
+  <div class="nav-status">
+    <div class="dot"></div>
+    AVAILABLE
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
 
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#work"     onclick="closeMobile()">Work</a>
+  <a href="#about"    onclick="closeMobile()">About</a>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#process"  onclick="closeMobile()">Process</a>
+  <a href="#contact"  onclick="closeMobile()">Contact</a>
+</nav>
 
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="home">
+  <!-- Left -->
+  <div class="hero-left">
+    <div class="hero-eyebrow">Visual Designer &amp; Digital Artist</div>
+    <h1 class="hero-name">
+      <span class="line1">ANKEET</span>
+      <span class="line2">
+        <span class="glitch-wrap" data-text="SHREEPALI">SHREEPALI</span>
+      </span>
+    </h1>
+    <div class="hero-role">// Graphic Designer · Brand Architect · Nepal</div>
+    <p class="hero-tagline">
+      Transforming ideas into <strong>high-impact visual systems</strong>.<br>
+      I design like a machine thinks — and feel like a human should.
+    </p>
+    <div class="avail-badge"><span class="blip"></span> Available for projects</div>
+    <div class="hero-btns">
+      <a href="#work" class="btn-mag btn-solid">View Work <span class="btn-arrow">→</span></a>
+      <a href="https://wa.me/9745983936?text=Hi%20Ankeet,%20I%20saw%20your%20portfolio!" target="_blank" rel="noopener" class="btn-mag btn-neon">WhatsApp Me</a>
+    </div>
+    <div class="hero-metrics">
+      <div class="metric"><div class="metric-num">3+</div><div class="metric-label">Years XP</div></div>
+      <div class="metric"><div class="metric-num">50+</div><div class="metric-label">Projects</div></div>
+      <div class="metric"><div class="metric-num">30+</div><div class="metric-label">Clients</div></div>
+      <div class="metric"><div class="metric-num">∞</div><div class="metric-label">Vision</div></div>
+    </div>
+  </div>
+
+  <!-- Right — ID Card -->
+  <div class="hero-right">
+    <div class="hero-card" id="heroCard">
+      <div class="card-scan"></div>
+      <div class="card-top">
+        <div class="card-chip">
+          <div class="card-chip-cell"></div><div class="card-chip-cell"></div>
+          <div class="card-chip-cell"></div><div class="card-chip-cell"></div>
         </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <h2 class="section-title">About Me</h2>
-        <div class="about-container">
-            <div class="about-text">
-                <p>Hello! I'm Ankeet Shreepali, a graphic designer focused on constructing clean, high-contrast, and meaningful designs across digital mediums.</p>
- <p>I specialize in building distinct visual structures for brands, formatting layouts with meticulous attention to detail, and blending dark, minimalist themes with bold accents.</p>
-            </div>
-<style>
-    .always-glow {
-        width: 200px;
-        /* Yesle warm yellow/gold light balchha */
-        box-shadow: 0px 0px 30px 5px rgba(0, 0, 128, 1);
-        border-radius: 5px;
-    }
-</style>
-
-<img src="ankeet.jpg" alt="ANKEET SHREEPALI" class="always-glow" width="200">
-
-	
-            <div>
-                <h3>Technical Core</h3>
-                <div class="skills-container">
-                    <div class="skill-badge">Brand Architecture</div>
-                    <div class="skill-badge">Adobe Photoshop</div>
-                    <div class="skill-badge">Adobe Illustrator</div>
-                    <div class="skill-badge">Vector Illustration</div>
-                    <div class="skill-badge">Layout & Typography</div>
-                    <div class="skill-badge">Digital Composition</div>
-                </div>
-            </div>
+        <div class="card-logo">AS</div>
+      </div>
+      <div class="card-mid">
+        <div class="card-name">ANKEET</div>
+        <div class="card-title-text">GRAPHIC DESIGNER · NEPAL</div>
+      </div>
+      <div class="card-bot">
+        <div class="card-number">PORTFOLIO · 2026 · NP</div>
+        <div class="card-skills">
+          <span class="card-skill">BRANDING</span>
+          <span class="card-skill">UI/UX</span>
+          <span class="card-skill">ILLUSTRATION</span>
+          <span class="card-skill">TYPOGRAPHY</span>
+          <span class="card-skill">PHOTOSHOP</span>
         </div>
-    </section>
-<!-- Updated Contact Section -->
-<section id="contact" class="contact">
-    <h2 class="section-title">Let's Connect</h2>
-    <div class="contact-box">
-        <p>let's chat directly on WhatsApp.</p>
-        
-        <!-- 
-          INSTRUCTIONS: 
-          1. Replace 9779812345678 with your actual country code and phone number.
-          2. The "?text=" part automatically fills in a friendly opening message for your client.
-        -->
-        <a href="https://wa.me/9745983936?text=Hi%20Ankeet,%20I%20saw%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20design%20project!" 
-           target="_blank" 
-           class="cta-btn" 
-           style="background-color: #25D366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);">
-           Chat on WhatsApp
-        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative elements -->
+  <div class="deco-cross" style="top:20%;right:5%;animation-delay:0s">✦</div>
+  <div class="deco-cross" style="bottom:25%;left:2%;animation-delay:2s;font-size:0.7rem">◈</div>
+</section>
+
+<!-- Ticker -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">Branding<span class="sep">✦</span></span>
+    <span class="ticker-item">Digital Art<span class="sep">✦</span></span>
+    <span class="ticker-item">UI Design<span class="sep">✦</span></span>
+    <span class="ticker-item">Typography<span class="sep">✦</span></span>
+    <span class="ticker-item">Photoshop<span class="sep">✦</span></span>
+    <span class="ticker-item">Illustrator<span class="sep">✦</span></span>
+    <span class="ticker-item">Logo Design<span class="sep">✦</span></span>
+    <span class="ticker-item">Layout Design<span class="sep">✦</span></span>
+    <span class="ticker-item">Visual Systems<span class="sep">✦</span></span>
+    <!-- dupe for loop -->
+    <span class="ticker-item">Branding<span class="sep">✦</span></span>
+    <span class="ticker-item">Digital Art<span class="sep">✦</span></span>
+    <span class="ticker-item">UI Design<span class="sep">✦</span></span>
+    <span class="ticker-item">Typography<span class="sep">✦</span></span>
+    <span class="ticker-item">Photoshop<span class="sep">✦</span></span>
+    <span class="ticker-item">Illustrator<span class="sep">✦</span></span>
+    <span class="ticker-item">Logo Design<span class="sep">✦</span></span>
+    <span class="ticker-item">Layout Design<span class="sep">✦</span></span>
+    <span class="ticker-item">Visual Systems<span class="sep">✦</span></span>
+  </div>
+</div>
+
+<!-- ===================== WORK ===================== -->
+<section class="section-wrap" id="work">
+  <div class="reveal">
+    <div class="section-eyebrow">Selected Projects</div>
+    <h2 class="section-title">THE WORK</h2>
+  </div>
+
+  <div class="bento-grid" style="margin-top:3rem;">
+
+    <div class="bento-item span-8 reveal" data-delay="1">
+      <div class="bento-img-wrap tall">
+        <img src="https://i.pinimg.com/736x/f8/7c/a3/f87ca3fdc74d7c35555fcf52cfc43bde.jpg" alt="Aether Tech Labs" loading="lazy">
+        <div class="holo-overlay"></div>
+      </div>
+      <div class="bento-body">
+        <span class="bento-tag">Branding / Identity</span>
+        <h3 class="bento-title">AETHER TECH LABS</h3>
+        <p class="bento-desc">Complete corporate visual system — logos, color architecture, and brand guidelines built for a cutting-edge software company.</p>
+      </div>
+      <div class="bento-num">01</div>
     </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Footer</title>
-    <style>
-        /* Footer ko main CSS box */
-        .site-footer {
-            background-color: #111116; /* Dark background */
-            color: #b5b5bd; /* Soft gray text color */
-            padding: 50px 20px 20px 20px;
-            font-family: Arial, sans-serif;
-            margin-top: 50px;
-        }
+    <div class="bento-item span-4 reveal" data-delay="2">
+      <div class="bento-img-wrap tall">
+        <img src="https://i.pinimg.com/736x/81/e5/76/81e576777c288f5e0584e439cb6759af.jpg" alt="Abstract Synthesis" loading="lazy">
+        <div class="holo-overlay"></div>
+      </div>
+      <div class="bento-body">
+        <span class="bento-tag">Digital Art</span>
+        <h3 class="bento-title">ABSTRACT SYNTHESIS</h3>
+        <p class="bento-desc">Dark, high-contrast structural compositions exploring negative space.</p>
+      </div>
+      <div class="bento-num">02</div>
+    </div>
 
-        /* 3-Column lai aaspas ma milauna Flexbox use gareko */
-        .footer-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap; /* Mobile ma afei ek muni arko aauchha */
-            justify-content: space-between;
-            gap: 30px;
-        }
+    <div class="bento-item span-5 reveal" data-delay="1">
+      <div class="bento-img-wrap mid">
+        <img src="https://i.pinimg.com/736x/64/c3/0d/64c30d9f583a5d51a6ea5e22e1900736.jpg" alt="Neo-Vibe Platform" loading="lazy">
+        <div class="holo-overlay"></div>
+      </div>
+      <div class="bento-body">
+        <span class="bento-tag">UI / UX Layout</span>
+        <h3 class="bento-title">NEO-VIBE PLATFORM</h3>
+        <p class="bento-desc">Modern interface design with sharp grids and mobile-first logic.</p>
+      </div>
+      <div class="bento-num">03</div>
+    </div>
 
-        /* Pratyek Column ko style */
-        .footer-column {
-            flex: 1;
-            min-width: 250px; /* Mobile ma dherai sano huna didaina */
-        }
+    <div class="bento-item span-7 reveal" data-delay="2">
+      <div class="bento-img-wrap mid" style="background:#06060f;display:flex;align-items:center;justify-content:center;">
+        <img src="1.jpeg" alt="Ankeet Signature" loading="lazy" style="object-fit:contain;max-height:280px;width:auto;">
+        <div class="holo-overlay"></div>
+      </div>
+      <div class="bento-body">
+        <span class="bento-tag">Personal / Signature</span>
+        <h3 class="bento-title">ANKEET — SIGNATURE</h3>
+        <p class="bento-desc">Personal brand identity and design language of Ankeet Shreepali. Raw, intentional, and unmistakable.</p>
+      </div>
+      <div class="bento-num">04</div>
+    </div>
 
-        .footer-column h3 {
-            color: #ffffff; /* Heading ko color white */
-            font-size: 18px;
-            margin-bottom: 20px;
-            position: relative;
-        }
+  </div>
+</section>
 
-        /* Heading ko muni sano line halna */
-        .footer-column h3::after {
-            content: '';
-            display: block;
-            width: 40px;
-            height: 3px;
-            background-color: #0088ff; /* Blue accent line */
-            margin-top: 8px;
-        }
+<!-- ===================== ABOUT ===================== -->
+<section class="section-wrap about-section" id="about">
+  <div class="about-split">
+    <div class="about-photo-wrap reveal-left">
+      <div class="about-photo-frame">
+        <img src="ankeet.jpg" alt="Ankeet Shreepali">
+        <div class="about-photo-label">ankeet.shreepali · nepal</div>
+      </div>
 
-        .footer-column p {
-            line-height: 1.6;
-            font-size: 14px;
-        }
-
-        /* Links ko style */
-        .footer-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: #b5b5bd;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        /* Mouse lada kheri color change hune (Hover Effect) */
-        .footer-links a:hover {
-            color: #0088ff; /* Hover hunda blue hunchha */
-        }
-
-        /* Sabai bhanda muni ko Copyright line */
-        .footer-bottom {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #22222a; /* Patlo boundary line */
-            font-size: 13px;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Yo Footer Code Tapai ko Webpage ko sabai bhanda muni hunchha -->
-    <footer class="site-footer">
-        <div class="footer-container">
-            <!-- Column 2: Links (Quick Links) -->
-            <div class="footer-column">
-                <h3>Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Portfolio</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 3: Samparka (Contact) -->
-            <div class="footer-column">
-                <h3>Contact</h3>
-                <ul class="footer-links">
-                    <li>📍 Beni, Myagdi, Nepal</li>
-                    <!-- Agi sikayako mailto link yasari footer ma baseko chha -->
-                    <li>📧 Email: <a href="samukankit@gmail.com">samukankit@email.com</a></li>
-                    <li>📞 Phone: +977 9745983936</li>
-                </ul>
-            </div>
-
+      <!-- XP Bars -->
+      <div class="xp-bars" style="margin-top:3rem;">
+        <div class="xp-bar-item">
+          <div class="xp-bar-label"><span>Adobe Photoshop</span><span>95%</span></div>
+          <div class="xp-track"><div class="xp-fill" style="--w:.95"></div></div>
         </div>
-
-        <!-- Copyright section -->
-        <div class="footer-bottom">
-            <p>&copy; 2026 Ankeet Shreepali. All Rights Reserved.</p>
+        <div class="xp-bar-item">
+          <div class="xp-bar-label"><span>Adobe Illustrator</span><span>90%</span></div>
+          <div class="xp-track"><div class="xp-fill" style="--w:.90"></div></div>
         </div>
-    </footer>
+        <div class="xp-bar-item">
+          <div class="xp-bar-label"><span>Brand Identity</span><span>92%</span></div>
+          <div class="xp-track"><div class="xp-fill" style="--w:.92"></div></div>
+        </div>
+        <div class="xp-bar-item">
+          <div class="xp-bar-label"><span>UI / UX Design</span><span>85%</span></div>
+          <div class="xp-track"><div class="xp-fill" style="--w:.85"></div></div>
+        </div>
+        <div class="xp-bar-item">
+          <div class="xp-bar-label"><span>Typography</span><span>93%</span></div>
+          <div class="xp-track"><div class="xp-fill" style="--w:.93"></div></div>
+        </div>
+      </div>
+    </div>
 
-</body>
-</html>
-  
+    <div class="about-body reveal" data-delay="2">
+      <div class="section-eyebrow">About</div>
+      <h2 class="section-title">THE<br>DESIGNER</h2>
+      <p>Hello. I'm <strong>Ankeet Shreepali</strong> — a graphic designer from <strong>Beni, Myagdi, Nepal</strong>, building visual systems that think differently.</p>
+      <p>I specialize in constructing distinct brand architectures, dark minimalist compositions, and layouts that command attention. Every pixel has intent.</p>
+      <p>My design philosophy: <strong>restraint is power, detail is respect, and boldness is honesty.</strong></p>
+      <div class="tag-cloud">
+        <span class="tag">Brand Architecture</span>
+        <span class="tag">Adobe CC</span>
+        <span class="tag">Vector Art</span>
+        <span class="tag">Layout Systems</span>
+        <span class="tag">Digital Composition</span>
+        <span class="tag">Motion Graphics</span>
+        <span class="tag">Print Design</span>
+        <span class="tag">Creative Direction</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="section-wrap" id="services">
+  <div class="reveal">
+    <div class="section-eyebrow">What I Do</div>
+    <h2 class="section-title">SERVICES</h2>
+  </div>
+  <div class="services-list" style="margin-top:3rem;">
+    <div class="service-row reveal">
+      <div class="service-num">01</div>
+      <div>
+        <div class="service-head">Brand Identity</div>
+        <p class="service-body">Logos, visual guidelines, color systems, and complete identity packages that define who you are and where you're going.</p>
+      </div>
+      <div class="service-icon-wrap">🎨</div>
+    </div>
+    <div class="service-row reveal" data-delay="1">
+      <div class="service-num">02</div>
+      <div>
+        <div class="service-head">UI / UX Design</div>
+        <p class="service-body">Clean, purposeful interfaces for web and mobile. Built on logic, refined through aesthetics — designed to convert and delight.</p>
+      </div>
+      <div class="service-icon-wrap">🖥️</div>
+    </div>
+    <div class="service-row reveal" data-delay="2">
+      <div class="service-num">03</div>
+      <div>
+        <div class="service-head">Digital Illustration</div>
+        <p class="service-body">Original artwork, editorial graphics, character design, and experimental compositions that push visual boundaries.</p>
+      </div>
+      <div class="service-icon-wrap">✏️</div>
+    </div>
+    <div class="service-row reveal" data-delay="3">
+      <div class="service-num">04</div>
+      <div>
+        <div class="service-head">Print &amp; Layout</div>
+        <p class="service-body">Posters, brochures, packaging, and editorial layouts with typographic precision and spatial mastery.</p>
+      </div>
+      <div class="service-icon-wrap">📐</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TERMINAL ===================== -->
+<section class="section-wrap terminal-section">
+  <div class="terminal-wrap">
+    <div class="reveal" style="margin-bottom:2.5rem;">
+      <div class="section-eyebrow">Interactive</div>
+      <h2 class="section-title">DESIGN<br>TERMINAL</h2>
+    </div>
+    <div class="terminal reveal" data-delay="2">
+      <div class="terminal-bar">
+        <div class="t-dot r"></div>
+        <div class="t-dot y"></div>
+        <div class="t-dot g"></div>
+        <span class="terminal-title">ankeet@portfolio:~</span>
+      </div>
+      <div class="terminal-body" id="termOutput">
+        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> whoami</span></div>
+        <div class="t-line t-out green">Ankeet Shreepali — Graphic Designer, Nepal</div>
+        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> skills --list</span></div>
+        <div class="t-line t-out pink">[ Photoshop, Illustrator, Branding, UI/UX, Typography, Print ]</div>
+        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> status</span></div>
+        <div class="t-line t-out yellow">✓ Available for freelance — response within 24h</div>
+        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> _<span class="t-cursor"></span></span></div>
+      </div>
+      <div class="terminal-input-row">
+        <span class="t-prompt">$</span>
+        <input type="text" id="termInput" placeholder="type a command: help, contact, projects..." autocomplete="off" spellcheck="false">
+        <button class="t-send" id="termSend">ENTER</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROCESS ===================== -->
+<section class="section-wrap" id="process">
+  <div class="reveal">
+    <div class="section-eyebrow">How I Work</div>
+    <h2 class="section-title">PROCESS</h2>
+  </div>
+  <div class="process-track">
+    <div class="process-step reveal" data-delay="1">
+      <div class="process-num">01</div>
+      <div class="process-head">Discover</div>
+      <p class="process-desc">Deep dive into your brand, goals, audience, and competitors. No guesswork.</p>
+    </div>
+    <div class="process-step reveal" data-delay="2">
+      <div class="process-num">02</div>
+      <div class="process-head">Concept</div>
+      <p class="process-desc">Sketches, moodboards, and visual directions. Multiple routes, no dead ends.</p>
+    </div>
+    <div class="process-step reveal" data-delay="3">
+      <div class="process-num">03</div>
+      <div class="process-head">Execute</div>
+      <p class="process-desc">High-fidelity design with pixel precision, iteration, and obsessive detail.</p>
+    </div>
+    <div class="process-step reveal" data-delay="4">
+      <div class="process-num">04</div>
+      <div class="process-head">Deliver</div>
+      <p class="process-desc">All files, guidelines, and assets. Clean handoff, zero ambiguity.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="section-wrap" id="contact">
+  <div class="contact-grid">
+    <div class="contact-left reveal-left">
+      <div class="big-text">LET'S<br><span class="outline-text">BUILD</span><br>TOGETHER</div>
+      <p class="contact-sub">Have a project, idea, or collab in mind? Reach out — I respond fast and bring full energy to every conversation.</p>
+      <a href="https://wa.me/9745983936?text=Hi%20Ankeet,%20I%20saw%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20design%20project!"
+         target="_blank" rel="noopener" class="btn-mag btn-solid" style="background:#25D366;border-color:#25D366;color:#fff;box-shadow:0 0 30px rgba(37,211,102,.3);">
+        💬 WhatsApp Me <span class="btn-arrow">→</span>
+      </a>
+    </div>
+    <div class="contact-card reveal" data-delay="2">
+      <div class="contact-info-row">
+        <span class="ci-icon">📍</span>
+        <div>
+          <div class="ci-label">Location</div>
+          <div class="ci-value">Beni, Myagdi, Nepal</div>
+        </div>
+      </div>
+      <div class="contact-info-row">
+        <span class="ci-icon">📧</span>
+        <div>
+          <div class="ci-label">Email</div>
+          <div class="ci-value"><a href="mailto:samukankit@gmail.com">samukankit@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="contact-info-row">
+        <span class="ci-icon">📞</span>
+        <div>
+          <div class="ci-label">Phone / WhatsApp</div>
+          <div class="ci-value"><a href="tel:+9779745983936">+977 9745983936</a></div>
+        </div>
+      </div>
+      <div class="contact-info-row">
+        <span class="ci-icon">⏱️</span>
+        <div>
+          <div class="ci-label">Response Time</div>
+          <div class="ci-value" style="color:var(--neon);">Within 24 hours</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-brand-name">ANKEET<br><em>SHREEPALI</em></div>
+      <div class="footer-brand-sub">Graphic Designer · Nepal · Est. 2021</div>
+    </div>
+    <div class="footer-links-group">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-links-group">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:samukankit@gmail.com">samukankit@gmail.com</a></li>
+        <li><a href="tel:+9779745983936">+977 9745983936</a></li>
+        <li>Beni, Myagdi, Nepal</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 ANKEET SHREEPALI</span>
+    <span>DESIGNED WITH <span>♥</span> IN NEPAL</span>
+    <span>ALL RIGHTS RESERVED</span>
+  </div>
+</footer>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+/* ---- LOADER ---- */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    loader.classList.add('hide');
+    setTimeout(() => loader.remove(), 600);
+  }, 1800);
+});
+
+/* ---- CURSOR ---- */
+const ring = document.getElementById('cursor-ring');
+const dot  = document.getElementById('cursor-dot');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animCursor(){
+  rx += (mx - rx) * 0.18;
+  ry += (my - ry) * 0.18;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  dot.style.left  = mx + 'px';
+  dot.style.top   = my + 'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a,button,.bento-item,.portfolio-item,.service-row,.tag,.skill-pill,.btn-mag').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+});
+
+/* ---- CANVAS PARTICLE NETWORK ---- */
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+class Particle {
+  constructor(){
+    this.x = Math.random()*W; this.y = Math.random()*H;
+    this.vx = (Math.random()-.5)*.4; this.vy = (Math.random()-.5)*.4;
+    this.r = Math.random()*1.5+0.5;
+    this.color = Math.random()>.6 ? '#00ffcc' : '#003fff';
+  }
+  update(){ this.x+=this.vx; this.y+=this.vy;
+    if(this.x<0||this.x>W) this.vx*=-1;
+    if(this.y<0||this.y>H) this.vy*=-1; }
+  draw(){
+    ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle = this.color; ctx.globalAlpha=.7; ctx.fill(); ctx.globalAlpha=1;
+  }
+}
+for(let i=0;i<90;i++) particles.push(new Particle());
+function drawLines(){
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<130){
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(0,255,204,${(1-d/130)*0.12})`;
+        ctx.lineWidth=0.6; ctx.stroke();
+      }
+    }
+  }
+}
+function animCanvas(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{ p.update(); p.draw(); });
+  drawLines();
+  requestAnimationFrame(animCanvas);
+}
+animCanvas();
+
+/* ---- HAMBURGER ---- */
+const hamburger = document.getElementById('hamburger');
+const mobileNav  = document.getElementById('mobileNav');
+hamburger.addEventListener('click', ()=>{
+  hamburger.classList.toggle('open');
+  mobileNav.classList.toggle('open');
+});
+function closeMobile(){
+  hamburger.classList.remove('open');
+  mobileNav.classList.remove('open');
+}
+
+/* ---- SCROLL REVEAL ---- */
+const revEls = document.querySelectorAll('.reveal,.reveal-left');
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.1});
+revEls.forEach(el=>revObs.observe(el));
+
+/* ---- XP BARS ---- */
+const xpFills = document.querySelectorAll('.xp-fill');
+const xpObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const w = parseFloat(e.target.style.getPropertyValue('--w'));
+      e.target.style.transform = `scaleX(${w})`;
+      e.target.classList.add('animate');
+    }
+  });
+},{threshold:0.3});
+xpFills.forEach(el=>xpObs.observe(el));
+
+/* ---- 3D CARD TILT ---- */
+const heroCard = document.getElementById('heroCard');
+if(heroCard){
+  heroCard.addEventListener('mousemove', e=>{
+    const rect = heroCard.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top)  / rect.height;
+    const rotX = (y - 0.5) * -18;
+    const rotY = (x - 0.5) *  18;
+    heroCard.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.03)`;
+    heroCard.style.setProperty('--mx', (x*100)+'%');
+    heroCard.style.setProperty('--my', (y*100)+'%');
+  });
+  heroCard.addEventListener('mouseleave', ()=>{
+    heroCard.style.transform = '';
+  });
+}
+
+/* ---- TERMINAL ---- */
+const termOutput = document.getElementById('termOutput');
+const termInput  = document.getElementById('termInput');
+const termSend   = document.getElementById('termSend');
+const cmds = {
+  help:     { lines: [
+    { text: 'Available commands:', cls: 'yellow' },
+    { text: '  whoami       — who is Ankeet', cls: '' },
+    { text: '  skills       — list of tools & skills', cls: '' },
+    { text: '  projects     — portfolio overview', cls: '' },
+    { text: '  contact      — how to reach Ankeet', cls: '' },
+    { text: '  status       — availability info', cls: '' },
+    { text: '  quote        — design philosophy', cls: '' },
+    { text: '  clear        — clear terminal', cls: '' },
+  ]},
+  whoami:   { lines: [{ text: 'Ankeet Shreepali — Graphic Designer & Brand Architect from Nepal.', cls: 'green' }]},
+  skills:   { lines: [{ text: '[ Adobe Photoshop · Illustrator · Brand Identity · UI/UX · Typography · Print Design · Vector Art ]', cls: 'pink' }]},
+  projects: { lines: [
+    { text: '01 — Aether Tech Labs (Branding)', cls: '' },
+    { text: '02 — Abstract Synthesis (Digital Art)', cls: '' },
+    { text: '03 — Neo-Vibe Platform (UI/UX)', cls: '' },
+    { text: '04 — Ankeet Signature (Personal)', cls: '' },
+  ]},
+  contact:  { lines: [
+    { text: '📍  Beni, Myagdi, Nepal', cls: 'green' },
+    { text: '📧  samukankit@gmail.com', cls: 'green' },
+    { text: '📞  +977 9745983936', cls: 'green' },
+    { text: '💬  wa.me/9745983936', cls: 'green' },
+  ]},
+  status:   { lines: [{ text: '✓ AVAILABLE — Accepting freelance projects. Response within 24h.', cls: 'yellow' }]},
+  quote:    { lines: [{ text: '"Restraint is power. Detail is respect. Boldness is honesty." — A.S.', cls: 'pink' }]},
+};
+function runTermCmd(raw){
+  const cmd = raw.trim().toLowerCase();
+  const cursor = termOutput.querySelector('.t-cursor');
+  const lastLine = cursor ? cursor.closest('.t-line') : null;
+
+  // append input line
+  const inputLine = document.createElement('div');
+  inputLine.className = 't-line';
+  inputLine.innerHTML = `<span class="t-prompt">$</span><span class="t-cmd"> ${raw}</span>`;
+  if(lastLine) termOutput.insertBefore(inputLine, lastLine);
+  else termOutput.appendChild(inputLine);
+
+  if(cmd === 'clear'){
+    termOutput.innerHTML = `<div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> _<span class="t-cursor"></span></span></div>`;
+    return;
+  }
+  const response = cmds[cmd];
+  const lines = response ? response.lines : [{ text: `Command not found: '${raw}'. Type 'help' for commands.`, cls:'yellow' }];
+  lines.forEach(l=>{
+    const div = document.createElement('div');
+    div.className = 't-line t-out' + (l.cls ? ' '+l.cls : '');
+    div.textContent = l.text;
+    if(lastLine) termOutput.insertBefore(div, lastLine);
+    else termOutput.appendChild(div);
+  });
+  termOutput.scrollTop = termOutput.scrollHeight;
+}
+termSend.addEventListener('click', ()=>{
+  if(termInput.value.trim()){ runTermCmd(termInput.value); termInput.value=''; }
+});
+termInput.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && termInput.value.trim()){ runTermCmd(termInput.value); termInput.value=''; }
+});
+
+/* ---- ACTIVE NAV ---- */
+const sections = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('#desktopNav a');
+window.addEventListener('scroll', ()=>{
+  let cur='';
+  sections.forEach(s=>{ if(window.scrollY >= s.offsetTop-140) cur=s.id; });
+  navLinks.forEach(a=>{
+    a.classList.remove('active');
+    if(a.getAttribute('href')==='#'+cur) a.classList.add('active');
+  });
+},{passive:true});
+</script>
 </body>
 </html>
